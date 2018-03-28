@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         if (savedInstanceState == null){
             // created for the first time
-            fragmentTransaction.add(R.id.relative_layout, recyclerFragment, "recyclerFragment");
+            fragmentTransaction.add(R.id.mainFrameLayout, recyclerFragment, "recyclerFragment");
             fragmentTransaction.commit();
+            recyclerFragment.getFragmentManager().executePendingTransactions(); // force commit now
         }
 
 //        // data to populate the RecyclerView with
