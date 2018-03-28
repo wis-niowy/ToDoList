@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ToDoManager</string>
+    <string name="default_task_header">New Task - fill me!</string>
+    <string name="default_task_description">Type here ...</string>
+</resources>
