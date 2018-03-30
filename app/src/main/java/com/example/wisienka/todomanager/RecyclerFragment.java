@@ -31,40 +31,6 @@ public class RecyclerFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//        View contentLayout = a.findViewById(R.id.relative_layout);
-//        ImageButton fab = contentLayout.findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CreateNewTask();
-//                Toast.makeText(a.getApplicationContext(),
-//                        "New task created", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        // data to populate the RecyclerView with
-//        ArrayList<TaskElement> tasks = new ArrayList<>();
-//        tasks.add(new TaskElement(a.getApplicationContext()));
-//        tasks.add(new TaskElement(a.getApplicationContext()));
-//
-//        // set up the RecyclerView
-//        RecyclerView recyclerView = a.findViewById(R.id.mainRecyclerViewer);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-//        adapter = new RecyclerViewAdapter(a.getApplicationContext(), tasks);
-//        //adapter.setClickListener(this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(a.getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                //Toast.makeText(getApplicationContext(), adapter.getItem(position) + " is clicked!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//                RemoveTaskFromList(position);
-//                Toast.makeText(a.getApplicationContext(), "Task deleted", Toast.LENGTH_SHORT).show();
-//            }
-//        }));
     }
 
     @Override

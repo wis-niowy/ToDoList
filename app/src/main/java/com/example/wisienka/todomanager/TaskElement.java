@@ -57,8 +57,6 @@ public class TaskElement {
 
             }
         });
-        //EditText description = (EditText)holder.myTaskView.getChildAt(3);
-        //description.setText(this.description);
     }
 
     private String GetDateInString(){

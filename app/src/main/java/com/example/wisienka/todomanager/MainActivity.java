@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener {
 
     RecyclerViewAdapter adapter;
-    ImageButton floatButton;
     Fragment recyclerFragment;
     Fragment settingsFragment;
 
@@ -27,21 +26,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        // set handler for FAB
-//        floatButton = (ImageButton) findViewById(R.id.fab);
-//        floatButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CreateNewTask();
-//                Toast.makeText(getApplicationContext(),
-//                        "New task created", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         // PreferenceFragments
         recyclerFragment = new RecyclerFragment();
         settingsFragment = new SettingsPreferenceFragment();
-        //Fragment fragment = new MyPreferenceFragment();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         if (savedInstanceState == null){
             // created for the first time
@@ -49,30 +36,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             fragmentTransaction.commit();
             recyclerFragment.getFragmentManager().executePendingTransactions(); // force commit now
         }
-
-//        // data to populate the RecyclerView with
-//        ArrayList<TaskElement> tasks = new ArrayList<>();
-//        tasks.add(new TaskElement(this));
-//        tasks.add(new TaskElement(this));
-//
-//        // set up the RecyclerView
-//        RecyclerView recyclerView = findViewById(R.id.mainRecyclerViewer);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        adapter = new RecyclerViewAdapter(this, tasks);
-//        //adapter.setClickListener(this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                //Toast.makeText(getApplicationContext(), adapter.getItem(position) + " is clicked!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//                RemoveTaskFromList(position);
-//                Toast.makeText(getApplicationContext(), "Task deleted", Toast.LENGTH_SHORT).show();
-//            }
-//        }));
     }
 
     @Override
@@ -105,13 +68,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     public void SettingsPreferenceFragmentClick(){
-        // PreferenceFragment
-        //Fragment fragment = new MyPreferenceFragment();
-        //FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        //fragmentTransaction.add(R.id.relative_layout, fragment, "checkBoxPrefSortByTaskName");
-        //fragmentTransaction.commit();
-        //fragment = getFragmentManager().findFragmentByTag("checkBoxPrefSortByTaskName");
-        getFragmentManager().beginTransaction().replace(android.R.id.content, settingsFragment).addToBackStack(null).commit();
+
+        getFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, settingsFragment).addToBackStack(null).commit();
     }
 
 //    @Override
