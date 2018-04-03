@@ -1,6 +1,8 @@
 package com.example.wisienka.todomanager;
 
 import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.wisienka.todomanager.DB.FeedReaderContract;
+import com.example.wisienka.todomanager.DB.FeedReaderDbHelper;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener {
@@ -20,11 +25,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     RecyclerViewAdapter adapter;
     Fragment recyclerFragment;
     Fragment settingsFragment;
+    FeedReaderDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // connect to the Database
+        dbHelper = new FeedReaderDbHelper(this.getApplicationContext());
+        dbHelper.open();
 
         // PreferenceFragments
         recyclerFragment = new RecyclerFragment();
@@ -52,12 +62,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             case R.id.action_settings:
                 SettingsPreferenceFragmentClick();
                 return true;
+            case R.id.action_delete_all:
+                DeleteAllPreferenceFragmentClick();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /*
+    /**
     * Called by FAB onClick handler
     * */
     private void CreateNewTask(){
@@ -70,6 +83,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void SettingsPreferenceFragmentClick(){
 
         getFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, settingsFragment).addToBackStack(null).commit();
+    }
+
+    public void DeleteAllPreferenceFragmentClick(){
+
+        RecyclerFragment rf = (RecyclerFragment)recyclerFragment;
+        rf.getAdapter().RemoveAllRecyclerViewItems();
+
+        FeedReaderDbHelper.deleteAllTasks();
     }
 
 //    @Override

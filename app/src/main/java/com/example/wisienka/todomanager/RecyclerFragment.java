@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -16,7 +17,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.wisienka.todomanager.DB.FeedReaderDbHelper;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Wisienka on 2018-03-28.
@@ -24,13 +28,16 @@ import java.util.ArrayList;
 
 public class RecyclerFragment extends Fragment
 {
-    RecyclerViewAdapter adapter;
-    Activity a; // mainActivity
+    protected RecyclerViewAdapter adapter;
+    protected FloatingActionButton fab;
+    protected Activity a; // mainActivity
+    protected FeedReaderDbHelper dbHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -40,7 +47,7 @@ public class RecyclerFragment extends Fragment
         View view = inflater.inflate(R.layout.content_main, container, false);
 
         //View contentLayout = view.findViewById(R.id.relative_layout);
-        ImageButton fab = view.findViewById(R.id.fab);
+        fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,17 +58,17 @@ public class RecyclerFragment extends Fragment
         });
 
         // data to populate the RecyclerView with
-        ArrayList<TaskElement> tasks = new ArrayList<>();
-        tasks.add(new TaskElement(a.getApplicationContext()));
-        tasks.add(new TaskElement(a.getApplicationContext()));
+        List<TaskElement> tasks = FeedReaderDbHelper.getAllTasks();//new ArrayList<>();
+//        tasks.add(new TaskElement(a.getApplicationContext()));
+//        tasks.add(new TaskElement(a.getApplicationContext()));
 
         // set up the RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerViewer);
-        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        adapter = new RecyclerViewAdapter(a.getApplicationContext(), tasks);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext())); // context from current view (content_main) - NOT activity_main
+        adapter = new RecyclerViewAdapter(view.getContext(), tasks);
         //adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(a.getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(view.getContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
                 //Toast.makeText(getApplicationContext(), adapter.getItem(position) + " is clicked!", Toast.LENGTH_SHORT).show();
@@ -89,13 +96,30 @@ public class RecyclerFragment extends Fragment
         a = activity;
     }
 
-    /*
+    /**
+     * Updates list according to database's content
+     */
+    public void UpdateDataList(){
+        adapter.RemoveAllRecyclerViewItems();
+        adapter.AddRecyclerViewItems(FeedReaderDbHelper.getAllTasks());
+    }
+
+    public RecyclerViewAdapter getAdapter() {
+        return adapter;
+    }
+
+    /**
     * Called by FAB onClick handler
     * */
     private void CreateNewTask(){
-        adapter.AddRecyclerViewItem(new TaskElement(a.getApplicationContext()));
+        TaskElement newTask = new TaskElement(a.getApplicationContext());
+        adapter.AddRecyclerViewItem(newTask);
+        long id = FeedReaderDbHelper.insertTask(newTask);
+        newTask.setDbId(id);
     }
     private void RemoveTaskFromList(int position){
+        TaskElement task = adapter.GetRecyclerViewItem(position);
+        FeedReaderDbHelper.deleteTask(task);
         adapter.RemoveRecyclerViewItem(position);
     }
 }

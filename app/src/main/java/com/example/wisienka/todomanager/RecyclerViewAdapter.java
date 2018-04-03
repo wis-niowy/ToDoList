@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/  {
         GridLayout myTaskView;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             myTaskView = itemView.findViewById(R.id.taskViewGrid);
             //itemView.setOnClickListener(this);
@@ -83,14 +84,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mData.get(id);
     }
 
-    public void AddRecyclerViewItem(TaskElement newTas){
-        mData.add(newTas);
-        this.notifyItemInserted(mData.size() - 1);
+    public void AddRecyclerViewItem(TaskElement newTask){
+        mData.add(0, newTask);
+        this.notifyItemInserted(0);
+    }
+
+    public void AddRecyclerViewItems(List<TaskElement> newTasks){
+        mData.addAll(0, newTasks);
+        this.notifyItemInserted(0);
     }
 
     public void RemoveRecyclerViewItem(int position){
         mData.remove(position);
         this.notifyItemRemoved(position);
+    }
+
+    public void RemoveAllRecyclerViewItems(){
+        mData = new ArrayList<TaskElement>();
+    }
+
+    public TaskElement GetRecyclerViewItem(int position){
+        return mData.get(position);
     }
 
     // allows clicks events to be caught
